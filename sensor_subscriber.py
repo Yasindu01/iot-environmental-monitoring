@@ -4,27 +4,27 @@ from datetime import datetime
 import csv
 
 
-# MQTT Broker details
+
 broker = "localhost"
 port = 1883
 
-# Topics
+
 topics = [("/sensor/temperature", 0),
           ("/sensor/humidity", 0),
           ("/sensor/air_quality", 0)]
 
-# Callback when connected
+
 def on_connect(client, userdata, flags, rc):
     print("Connected to MQTT Broker with result code " + str(rc))
     client.subscribe(topics)
 
-# Callback when message received
+
 def on_message(client, userdata, msg):
     topic = msg.topic
     payload = msg.payload.decode()
     print(f"[RECEIVED] Topic: {topic} | Message: {payload}")
 
-    # Convert JSON message to dictionary
+ 
     try:
         data = json.loads(payload)
         if topic == "/sensor/temperature":
@@ -92,8 +92,7 @@ def store_in_neo4j(data):
     print("✅ Stored air quality in Neo4j:", data)
 
 
-# ----------------------------
-# MQTT Setup
+
 client = mqtt.Client()
 client.on_connect = on_connect
 client.on_message = on_message
